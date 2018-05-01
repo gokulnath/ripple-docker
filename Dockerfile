@@ -17,7 +17,7 @@ apt-get -y install libssl-dev
 RUN apt-get  -y  install libboost-all-dev
 WORKDIR rippled
 RUN git clone https://github.com/ripple/rippled.git .
-RUN git checkout master
+RUN git checkout tags/0.90.0
 RUN export SCONSFLAGS="-j `grep -c processor /proc/cpuinfo`"
 RUN scons
 RUN build/rippled -u
