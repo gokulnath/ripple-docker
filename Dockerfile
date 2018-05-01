@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 MAINTAINER kp <dockerkp@gmail.com>
 
 
@@ -6,14 +6,19 @@ VOLUME /var/lib/rippled/db
 VOLUME /opt/ripple/etc
 VOLUME /var/log/rippled/
 
-EXPOSE 51235
-
-RUN apt-get update
-RUN apt-get install -y yum-utils alien
-
-RUN rpm -Uvh https://mirrors.ripple.com/ripple-repo-el7.rpm
-RUN yumdownloader --enablerepo=ripple-stable --releasever=el7 rippled
-
-RUN rpm --import https://mirrors.ripple.com/rpm/RPM-GPG-KEY-ripple-release && rpm -K rippled*.rpm
-RUN alien -i --scripts rippled*.rpm && rm rippled*.rpm
-CMD ["/opt/ripple/bin/rippled", "--net", "--conf", "/etc/opt/ripple/rippled.cfg"]
+EXPOSE 5123
+RUN apt-get update; apt-get -y upgrade ; apt-get install -y software-properties-common
+RUN apt-get -y install git &&  \
+apt-get -y install scons &&  \
+apt-get -y install pkg-config &&  \
+apt-get -y install protobuf-compiler &&  \ 
+apt-get -y install libprotobuf-dev &&  \
+apt-get -y install libssl-dev 
+RUN apt-get  -y  install libboost-all-dev
+WORKDIR rippled
+RUN git clone https://github.com/ripple/rippled.git .
+RUN git checkout master
+RUN export SCONSFLAGS="-j `grep -c processor /proc/cpuinfo`"
+RUN scons
+RUN build/rippled -u
+CMD ["build/rippled", "--net", "--conf", "/etc/opt/ripple/rippled.cfg"]
