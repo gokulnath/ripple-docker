@@ -9,12 +9,7 @@ VOLUME /var/log/rippled/
 EXPOSE 5123
 RUN mkdir -p /opt/ripple/bin/
 RUN apt-get update; apt-get -y upgrade  &&  \
-apt-get -y install git &&  \
-apt-get -y install pkg-config &&  \
-apt-get -y install protobuf-compiler &&  \ 
-apt-get -y install libprotobuf-dev &&  \
-apt-get -y install libssl-dev &&  \
-apt-get  -y  install libboost-all-dev && \
+apt-get -y install git cmake pkg-config protobuf-compiler libprotobuf-dev libssl-dev libboost-all-dev && \
 apt-get clean
 
 RUN git clone https://github.com/ripple/rippled.git --depth 1 -b 1.0.1  &&  \
@@ -22,7 +17,7 @@ cd rippled && \
 mkdir build && \
 cd build && \
 cmake -Dtarget=gcc.debug.unity .. && \
-cmake --build . -- -j 1 && \
+cmake --build . -- -j 4 && \
 cd .. && \
 build/rippled -u && \
 cp -r build/rippled /opt/ripple/bin/  && \
