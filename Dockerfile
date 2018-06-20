@@ -21,7 +21,8 @@ RUN git clone https://github.com/ripple/rippled.git --depth 1 -b 1.0.1  &&  \
 cd rippled && \
 mkdir build && \
 cd build && \
-cmake -Dtarget=gcc.debug.unity .. &&\
+cmake -Dtarget=gcc.debug.unity .. && \
+cmake --build . -- -j 1 && \
 cd .. && \
 build/rippled -u && \
 cp -r build/rippled /opt/ripple/bin/  && \
