@@ -1,0 +1,25 @@
+image: ubuntu:18.04
+
+stages:
+  - build
+
+cache:
+  untracked: true
+
+build:
+  image: docker:git
+  stage: build
+  variables:
+    DOCKER_DRIVER: overlay
+    NODE_IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t $NODE_IMAGE_TAG .
+    - docker push $NODE_IMAGE_TAG
+  
+  only:
+    - production
+    - staging
+    - tags
+
