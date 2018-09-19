@@ -20,14 +20,14 @@ RUN cd /home && wget -nv http://downloads.sourceforge.net/project/boost/boost/1.
   && ./b2 -j 8 \
   && cd /home
 
-RUN git clone https://github.com/ripple/rippled.git --depth 1 -b 1.1.0  &&  \
+RUN git clone https://github.com/ripple/rippled.git --depth 1 -b 1.1.0 \
   && cd rippled \
   && mkdir build \
   && cd build \
   && cmake -DBoost_DEBUG=true -DBOOST_ROOT=/home/boost_1_67_0 .. \
   && cmake --build . -- -j 4 \
   && cd .. \
-  && build/rippled -u && \
-cp -r build/rippled /opt/ripple/bin/  && \
-rm -rf ../rippled
+  && build/rippled -u \
+  && cp -r build/rippled /opt/ripple/bin/ \
+  && rm -rf ../rippled
 CMD ["/opt/ripple/bin/rippled", "--net", "--conf", "/opt/ripple/etc/rippled.cfg"]
