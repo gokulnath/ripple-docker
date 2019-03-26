@@ -9,7 +9,7 @@ VOLUME /var/log/rippled/
 EXPOSE 5123
 RUN mkdir -p /opt/ripple/bin/
 RUN apt-get update; apt-get -y upgrade  &&  \
-apt-get -y install git cmake pkg-config protobuf-compiler libprotobuf-dev libssl-dev cmake wget && \
+apt-get -y install git cmake pkg-config protobuf-compiler libprotobuf-dev libssl-dev cmake wget vim && \
 apt-get clean
 
 RUN cd /home && wget -nv http://downloads.sourceforge.net/project/boost/boost/1.67.0/boost_1_67_0.tar.gz \
@@ -20,7 +20,7 @@ RUN cd /home && wget -nv http://downloads.sourceforge.net/project/boost/boost/1.
   && ./b2 -j 8 \
   && cd /home
 
-RUN git clone https://github.com/ripple/rippled.git --depth 1 -b 1.1.0 \
+RUN git clone https://github.com/ripple/rippled.git --depth 1 -b 1.2.2 \
   && cd rippled \
   && mkdir build \
   && cd build \
