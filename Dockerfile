@@ -20,7 +20,7 @@ RUN cd /home && wget -nv http://downloads.sourceforge.net/project/boost/boost/1.
   && ./b2 -j 8 \
   && cd /home
 
-RUN git clone https://github.com/ripple/rippled.git --depth 1 -b 1.2.2 \
+RUN git clone https://github.com/ripple/rippled.git --depth 1 -b 1.2.3 \
   && cd rippled \
   && mkdir build \
   && cd build \
